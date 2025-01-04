@@ -17,24 +17,30 @@ classDiagram
         +restart()
     }
 
-    class Player {
+    class Character {
         +String name
         +int health
         +int armor
+        +move(int x, int y, int z)
+        +takeDamage(int amount)
+    }
+
+    class Player {
         +Weapon equippedWeapon
         +List~Item~ inventory
-        +move(int x, int y, int z)
         +attack()
-        +takeDamage(int amount)
+        +useItem(Item item)
     }
 
     class Enemy {
         +String type
-        +int health
         +int damage
-        +move()
-        +attack(Player target)
-        +takeDamage(int amount)
+        +attack(Character target)
+    }
+
+    class BossEnemy {
+        +String specialAttack
+        +performSpecialAttack(Character target)
     }
 
     class Weapon {
@@ -45,15 +51,29 @@ classDiagram
         +fire()
     }
 
+    class MeleeWeapon {
+        +int range
+        +swing()
+    }
+
+    class RangedWeapon {
+        +int range
+        +aim()
+    }
+
     class Item {
         +String name
         +String effect
-        +use(Player player)
+        +use(Character character)
     }
 
     Game --> Level
-    Level --> Player
-    Level --> Enemy
+    Level --> Character
+    Character <|-- Player
+    Character <|-- Enemy
+    Enemy <|-- BossEnemy
     Player --> Weapon
     Player --> Item
-    Enemy --> Weapon
+    Weapon <|-- MeleeWeapon
+    Weapon <|-- RangedWeapon
+
